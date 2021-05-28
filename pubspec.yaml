@@ -35,7 +35,6 @@ dependencies:
   # async package to add additional Cancellable operations
   async: ^2.4.1
   shared_preferences: ^0.5.8
-  webview_cookie_manager: 1.0.8
 
 dev_dependencies:
   flutter_test:
