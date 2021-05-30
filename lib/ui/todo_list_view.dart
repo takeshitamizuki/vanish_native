@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vanish_native/ui/todo_add_view.dart';
 import 'package:http/http.dart' as http;
@@ -35,44 +36,66 @@ class _TodoListState extends State<TodoList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.miscellaneous_services),
+        ),
         title: Text('リスト一覧'),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.mode_edit),
+          )
+        ],
       ),
       body: ListView.builder(
         itemCount: totalCount,
         itemBuilder: (context, index) {
-          return Card(
-            margin: EdgeInsets.only(left: 60, top: 10, right: 10, bottom: 10),
-            child: Container(
-              margin: EdgeInsets.all(10),
-              width: 300,
-              padding: EdgeInsets.all(20),
-              child: Column(
-                children: <Widget>[
-                  Row(
+          return Row(
+            children: <Widget>[
+              Card(
+                margin: EdgeInsets.only(left: 10),
+                child: Container(
+                  padding: EdgeInsets.all(10),
+                  alignment: Alignment.center,
+                  child: Text('Today'),
+                ),
+              ),
+              Card(
+                margin: EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 10),
+                child: Container(
+                  margin: EdgeInsets.all(5),
+                  width: 310,
+                  padding: EdgeInsets.all(20),
+                  child: Column(
                     children: <Widget>[
-                      Container(
-                        child: Text(todoList[index]["title"]),
+                      Row(
+                        children: <Widget>[
+                          Container(
+                            child: Text(todoList[index]["title"]),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 50),
+                            child: Text(todoList[index]["endDate"].split(" ")[0]),
+                          ),
+                        ],
                       ),
-                      Container(
-                        margin: EdgeInsets.only(left: 50),
-                        child: Text(todoList[index]["endDate"].split(" ")[0]),
-                      ),
+                      Row(
+                        children: <Widget>[
+                          Container(
+                            child: Text(todoList[index]["tags"][0]),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 10),
+                            child: Text(todoList[index]["tags"][1]),
+                          ),
+                        ],
+                      )
                     ],
                   ),
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        child: Text(todoList[index]["tags"][0]),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 10),
-                        child: Text(todoList[index]["tags"][1]),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
+                ),
+              )
+            ]
           );
         },
       ),
