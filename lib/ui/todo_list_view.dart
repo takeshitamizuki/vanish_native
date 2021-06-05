@@ -45,7 +45,7 @@ class _TodoListState extends State<TodoList> {
           IconButton(
             onPressed: () {},
             icon: Icon(Icons.mode_edit),
-          )
+          ),
         ],
       ),
       body: ListView.builder(
@@ -58,11 +58,17 @@ class _TodoListState extends State<TodoList> {
                 child: Container(
                   padding: EdgeInsets.all(10),
                   alignment: Alignment.center,
-                  child: Text('Today'),
+                  child: (() {
+                    if (todoList[index]["todaySequences"] != null) {
+                      return Text('Today');
+                    } else {
+                      return Text('');
+                    }
+                  })(),
                 ),
               ),
               Card(
-                margin: EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 10),
+                margin: EdgeInsets.all(10),
                 child: Container(
                   margin: EdgeInsets.all(5),
                   width: 310,
@@ -124,6 +130,18 @@ class _TodoListState extends State<TodoList> {
                 }
               },
             ),
+          ),
+          RaisedButton(
+            child: const Text('OPEN'),
+            color: Colors.white,
+            textColor: Colors.black,
+            onPressed: () {},
+          ),
+          RaisedButton(
+            child: const Text('CLOSE'),
+            color: Colors.white,
+            textColor: Colors.black,
+            onPressed: () {},
           ),
           Container(
             child: FloatingActionButton(
