@@ -40,7 +40,7 @@ class _TodoListState extends State<TodoList> {
             onPressed: () {},
             icon: Icon(Icons.miscellaneous_services),
         ),
-        title: Text('リスト一覧'),
+        title: Text('TODO一覧 ${this.totalCount}件'),
         actions: [
           IconButton(
             onPressed: () {},

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:vanish_native/ui/todo_list_view.dart';
 
 void main() {
@@ -10,6 +11,15 @@ class Vanish extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Vanish',
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en'),
+        const Locale('ja'),
+      ],
       theme: ThemeData(
         primarySwatch:Colors.blue,
       ),

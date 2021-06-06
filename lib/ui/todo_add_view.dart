@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 
-// リスト追加画面用Widget
 class TodoAdd extends StatefulWidget {
   @override
   _TodoAddState createState() => _TodoAddState();
 }
 class _TodoAddState extends State<TodoAdd> {
-  // 入力されたテキストをデータとして持つ
-  String _text = '';
 
   // データを元に表示するWidget
   @override
@@ -16,55 +13,111 @@ class _TodoAddState extends State<TodoAdd> {
       appBar: AppBar(
         title: Text('リスト追加'),
       ),
-      body: Container(
-        // 余白を付ける
-        padding: EdgeInsets.all(64),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(_text, style: TextStyle(color: Colors.blue)),
-            const SizedBox(height: 8),
-            // テキスト入力
-            TextField(
-              // 入力されたテキストの値を受け取る(valueが入力されたテキスト)
-              onChanged: (String value) {
-                // データが変更したことを知らせる(画面を更新する)
-                setState(() {
-                  // データを変更
-                  _text = value;
-                });
+      body: FormGroup()
+    );
+  }
+}
+
+class FormGroup extends StatefulWidget {
+  @override
+  _FormGroupState createState() => _FormGroupState();
+}
+class _FormGroupState extends State<FormGroup> {
+  final _formKey = GlobalKey<FormState>();
+  String _todo = '';
+  String _startDay = '';
+  String _endDay = '';
+  String _note = '';
+  List tags = [];
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          TextFormField(
+            decoration: const InputDecoration(
+              labelText: "やること：",
+              hintText: '',
+            ),
+            autovalidate: false,
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'やることを入力してください';
+              }
+              return null;
+            },
+            onSaved: (value) => () {
+              print('$value');
+              _todo = value;
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.calendar_today),
+            onPressed: () async {
+              final selectedDate = await showDatePicker(
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(DateTime.now().year),
+                lastDate: DateTime(DateTime.now().year + 1),
+                locale: const Locale('ja'),
+              );
+
+              if (selectedDate != null) {
+                // do something
+              }
+            },
+          ),
+          TextFormField(
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: "ノート：",
+              hintText: '',
+            ),
+            autovalidate: false,
+            validator: (value) {
+              if (value.isEmpty) {
+                return '期限を入力してください';
+              }
+              return null;
+            },
+            onSaved: (value) => () {
+              print('$value');
+              _note = value;
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: RaisedButton(
+              onPressed: () {
+                if (_formKey.currentState.validate()) {
+                  this._formKey.currentState.save();
+                }
               },
+              child: Text('Submit'),
             ),
-            Container(
-              // 横幅いっぱいに広げる
-              width: double.infinity,
-              // リスト追加ボタン
-              child: ElevatedButton(
-                onPressed: () {
-                  // "pop"で前の画面に戻る
-                  // "pop"の引数から前の画面にデータを渡す
-                  Navigator.of(context).pop(_text);
-                },
-                child: Text('リスト追加', style: TextStyle(color: Colors.white)),
-              ),
-            ),
-            const SizedBox(height: 8),
-            Container(
-              // 横幅いっぱいに広げる
-              width: double.infinity,
-              // キャンセルボタン
-              child: TextButton(
-                // ボタンをクリックした時の処理
-                onPressed: () {
-                  // "pop"で前の画面に戻る
-                  Navigator.of(context).pop();
-                },
-                child: Text('キャンセル'),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
+}
+
+Widget textFormField(String label, String errorMsg) {
+  return TextFormField(
+    decoration: InputDecoration(
+      border: OutlineInputBorder(),
+      labelText: '$label：',
+      hintText: '',
+    ),
+    autovalidate: false,
+    validator: (value) {
+      if (value.isEmpty) {
+        return errorMsg;
+      }
+      return null;
+    },
+  );
 }

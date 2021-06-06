@@ -68,6 +68,12 @@
       "languageVersion": "2.10"
     },
     {
+      "name": "flutter_localizations",
+      "rootUri": "file:///Users/mizuki/development/flutter/packages/flutter_localizations",
+      "packageUri": "lib/",
+      "languageVersion": "2.2"
+    },
+    {
       "name": "flutter_test",
       "rootUri": "file:///Users/mizuki/development/flutter/packages/flutter_test",
       "packageUri": "lib/",
@@ -284,7 +290,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2021-04-25T13:57:54.285922Z",
+  "generated": "2021-06-06T23:31:05.657848Z",
   "generator": "pub",
   "generatorVersion": "2.10.1"
 }
