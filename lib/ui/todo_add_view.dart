@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class TodoAdd extends StatefulWidget {
   @override
@@ -24,12 +26,37 @@ class FormGroup extends StatefulWidget {
 }
 class _FormGroupState extends State<FormGroup> {
   final _formKey = GlobalKey<FormState>();
-  String _todo = '';
+  String _title = '';
   String _startDay = '';
   String _endDay = '';
   String _note = '';
-  List tags = [];
+  List _tags = [];
 
+  void _post() async {
+    final url = "http://localhost:8080/api/v1/todo";
+    Map res;
+    Map requestBody =
+    {
+      "todoId": null,
+      "userId": "12345678",
+      "title": "test",
+      "startDate": "2021/06/16",
+      "endDate": "2021/06/20",
+      "registeredAt": "2021/06/16",
+      "updateAt": "2021/06/16",
+      "completedAt": "",
+      "deletedAt": "",
+      "latitude": "",
+      "longitude": "",
+      "note": "test",
+      "tags": ["仕事"],
+      "todaySequences": "1",
+      "status": "ture",
+    };
+    String body = json.encode(requestBody);
+    http.Response response = await http.post(url, body: body);
+    res = json.decode(utf8.decode(response.bodyBytes));
+  }
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -51,7 +78,7 @@ class _FormGroupState extends State<FormGroup> {
             },
             onSaved: (value) => () {
               print('$value');
-              _todo = value;
+              _title = value;
             },
           ),
           IconButton(
@@ -94,9 +121,10 @@ class _FormGroupState extends State<FormGroup> {
               onPressed: () {
                 if (_formKey.currentState.validate()) {
                   this._formKey.currentState.save();
+                  this._post();
                 }
               },
-              child: Text('Submit'),
+              child: Text('登録'),
             ),
           ),
         ],
