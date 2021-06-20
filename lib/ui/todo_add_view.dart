@@ -150,17 +150,31 @@ class _FormGroupState extends State<FormGroup> {
               },
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: RaisedButton(
-              onPressed: () {
-                if (_formKey.currentState.validate()) {
-                  this._formKey.currentState.save();
-                  this._post();
-                }
-              },
-              child: Text('登録'),
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: RaisedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('キャンセル'),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: RaisedButton(
+                  onPressed: () {
+                    if (_formKey.currentState.validate()) {
+                      this._formKey.currentState.save();
+                      this._post();
+                    }
+                  },
+                  child: Text('登録'),
+                ),
+              ),
+            ],
           ),
         ],
       ),
