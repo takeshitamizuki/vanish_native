@@ -13,7 +13,7 @@ class _TodoAddState extends State<TodoAdd> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('リスト追加'),
+        title: Text('TODO登録'),
       ),
       body: FormGroup()
     );
@@ -64,56 +64,91 @@ class _FormGroupState extends State<FormGroup> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: "やること：",
-              hintText: '',
+          Container(
+            margin: EdgeInsets.all(10),
+            child: TextFormField(
+              decoration: const InputDecoration(
+                labelText: "やること：",
+                hintText: '',
+                border: OutlineInputBorder(),
+              ),
+              autovalidate: false,
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'やることを入力してください';
+                }
+                return null;
+              },
+              onSaved: (value) => () {
+                print('$value');
+                _title = value;
+              },
             ),
-            autovalidate: false,
-            validator: (value) {
-              if (value.isEmpty) {
-                return 'やることを入力してください';
-              }
-              return null;
-            },
-            onSaved: (value) => () {
-              print('$value');
-              _title = value;
-            },
           ),
-          IconButton(
-            icon: Icon(Icons.calendar_today),
-            onPressed: () async {
-              final selectedDate = await showDatePicker(
-                context: context,
-                initialDate: DateTime.now(),
-                firstDate: DateTime(DateTime.now().year),
-                lastDate: DateTime(DateTime.now().year + 1),
-                locale: const Locale('ja'),
-              );
+          Container(
+            margin: EdgeInsets.all(10),
+            child: IconButton(
+              icon: Icon(Icons.calendar_today),
+              onPressed: () async {
+                final selectedDate = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(DateTime
+                      .now()
+                      .year),
+                  lastDate: DateTime(DateTime
+                      .now()
+                      .year + 1),
+                  locale: const Locale('ja'),
+                );
 
-              if (selectedDate != null) {
-                // do something
-              }
-            },
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: "ノート：",
-              hintText: '',
+                if (selectedDate != null) {
+                  // do something
+                }
+              },
             ),
-            autovalidate: false,
-            validator: (value) {
-              if (value.isEmpty) {
-                return '期限を入力してください';
-              }
-              return null;
-            },
-            onSaved: (value) => () {
-              print('$value');
-              _note = value;
-            },
+          ),
+          Container(
+            margin: EdgeInsets.all(10),
+            child: TextFormField(
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: "ノート：",
+                hintText: '',
+              ),
+              autovalidate: false,
+              validator: (value) {
+                if (value.isEmpty) {
+                  return '期限を入力してください';
+                }
+                return null;
+              },
+              onSaved: (value) => () {
+                print('$value');
+                _note = value;
+              },
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.all(10),
+            child: TextFormField(
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: "タグ：",
+                hintText: '',
+              ),
+              autovalidate: false,
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'タグを入力してください';
+                }
+                return null;
+              },
+              onSaved: (value) => () {
+                print('$value');
+                _tags.add(value);
+              },
+            ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
