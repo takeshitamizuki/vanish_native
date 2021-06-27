@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
+
 class TodoAdd extends StatefulWidget {
   @override
   _TodoAddState createState() => _TodoAddState();
@@ -40,21 +42,24 @@ class _FormGroupState extends State<FormGroup> {
       "todoId": null,
       "userId": "12345678",
       "title": "test",
-      "startDate": "2021/06/16",
-      "endDate": "2021/06/20",
-      "registeredAt": "2021/06/16",
-      "updateAt": "2021/06/16",
-      "completedAt": "",
-      "deletedAt": "",
-      "latitude": "",
-      "longitude": "",
+      "startDate": "2021-06-16 12:00:00",
+      "endDate": "2021-06-20 12:00:00",
+      "registeredAt": "2021-06-16 12:00:00",
+      "updateAt": "2021-06-16 12:00:00",
+      "completedAt": null,
+      "deletedAt": null,
+      "latitude": null,
+      "longitude": null,
       "note": "test",
       "tags": ["仕事"],
       "todaySequences": "1",
-      "status": "ture",
+      "status": "true",
+    };
+    Map<String, String> headers = {
+      'Content-Type': 'application/json'
     };
     String body = json.encode(requestBody);
-    http.Response response = await http.post(url, body: body);
+    http.Response response = await http.post(url, body: body, headers: headers);
     res = json.decode(utf8.decode(response.bodyBytes));
   }
   @override
@@ -101,8 +106,8 @@ class _FormGroupState extends State<FormGroup> {
                       .year + 1),
                   locale: const Locale('ja'),
                 );
-
-                if (selectedDate != null) {
+                print(DateFormat('yyyy年M月d日').format(selectedDate));
+                if (_startDay != null) {
                   // do something
                 }
               },
@@ -117,12 +122,6 @@ class _FormGroupState extends State<FormGroup> {
                 hintText: '',
               ),
               autovalidate: false,
-              validator: (value) {
-                if (value.isEmpty) {
-                  return '期限を入力してください';
-                }
-                return null;
-              },
               onSaved: (value) => () {
                 print('$value');
                 _note = value;
