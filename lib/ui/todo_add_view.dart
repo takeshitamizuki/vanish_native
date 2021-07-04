@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -27,12 +28,53 @@ class FormGroup extends StatefulWidget {
   _FormGroupState createState() => _FormGroupState();
 }
 class _FormGroupState extends State<FormGroup> {
+  var _textFieldFocusNode;
+  var _inputController = TextEditingController();
+  var _chipList = List<Chip>();
+  var _keyNumber = 0;
   final _formKey = GlobalKey<FormState>();
   String _title = '';
   String _startDay = '';
   String _endDay = '';
   String _note = '';
   List _tags = [];
+
+  @override
+  void initState() {
+    _textFieldFocusNode = FocusNode();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _textFieldFocusNode.dispose();
+    super.dispose();
+  }
+
+  void _onSubmitted(String text) {
+    setState(() {
+      _inputController.text = '';
+      _addChip(text);
+      FocusScope.of(context).requestFocus(_textFieldFocusNode);
+    });
+  }
+
+  void _addChip(String text) {
+    var chipKey = Key('chip_key_$_keyNumber');
+    _keyNumber++;
+
+    _chipList.add(
+      Chip(
+        key: chipKey,
+        label: Text(text),
+        onDeleted: () => _deleteChip(chipKey),
+      ),
+    );
+  }
+
+  void _deleteChip(Key chipKey) {
+    setState(() => _chipList.removeWhere((Widget w) => w.key == chipKey));
+  }
 
   void _post() async {
     final url = "http://localhost:8080/api/v1/todo";
@@ -41,7 +83,7 @@ class _FormGroupState extends State<FormGroup> {
     {
       "todoId": null,
       "userId": "12345678",
-      "title": "test",
+      "title": _title,
       "startDate": "2021-06-16 12:00:00",
       "endDate": "2021-06-20 12:00:00",
       "registeredAt": "2021-06-16 12:00:00",
@@ -50,7 +92,7 @@ class _FormGroupState extends State<FormGroup> {
       "deletedAt": null,
       "latitude": null,
       "longitude": null,
-      "note": "test",
+      "note": _note,
       "tags": ["仕事"],
       "todaySequences": "1",
       "status": "true",
@@ -84,10 +126,9 @@ class _FormGroupState extends State<FormGroup> {
                 }
                 return null;
               },
-              onSaved: (value) => () {
-                print('$value');
+              onSaved: (value) => setState(() {
                 _title = value;
-              },
+              }),
             ),
           ),
           Container(
@@ -106,10 +147,6 @@ class _FormGroupState extends State<FormGroup> {
                       .year + 1),
                   locale: const Locale('ja'),
                 );
-                print(DateFormat('yyyy年M月d日').format(selectedDate));
-                if (_startDay != null) {
-                  // do something
-                }
               },
             ),
           ),
@@ -122,31 +159,42 @@ class _FormGroupState extends State<FormGroup> {
                 hintText: '',
               ),
               autovalidate: false,
-              onSaved: (value) => () {
-                print('$value');
+              onSaved: (value) => setState(() {
                 _note = value;
-              },
+              }),
             ),
           ),
           Container(
-            margin: EdgeInsets.all(10),
-            child: TextFormField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: "タグ：",
-                hintText: '',
-              ),
-              autovalidate: false,
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'タグを入力してください';
-                }
-                return null;
-              },
-              onSaved: (value) => () {
-                print('$value');
-                _tags.add(value);
-              },
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                TextField(
+                  focusNode: _textFieldFocusNode,
+                  autofocus: true,
+                  controller: _inputController,
+                  decoration: const InputDecoration(
+                    labelText: "タグ：",
+                    hintText: '',
+                  ),
+                  onSubmitted: _onSubmitted,
+                ),
+            //     Column(
+            //       mainAxisAlignment: MainAxisAlignment.start,
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       children: <Widget>[
+            //         Expanded(
+            //           child: Wrap(
+            //             alignment: WrapAlignment.start,
+            //             spacing: 8.0,
+            //             runSpacing: 0.0,
+            //             direction: Axis.vertical,
+            //             children: _chipList,
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+              ],
             ),
           ),
           Row(

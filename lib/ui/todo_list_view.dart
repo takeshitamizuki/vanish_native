@@ -86,17 +86,17 @@ class _TodoListState extends State<TodoList> {
                           ),
                         ],
                       ),
-                      Row(
-                        children: <Widget>[
-                          Container(
-                            child: Text(todoList[index]["tags"][0]),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(left: 10),
-                            child: Text(todoList[index]["tags"][1]),
-                          ),
-                        ],
-                      )
+                      // Row(
+                      //   children: <Widget>[
+                      //     Container(
+                      //       child: Text(todoList[index]["tags"][0]),
+                      //     ),
+                      //     Container(
+                      //       margin: EdgeInsets.only(left: 10),
+                      //       child: Text(todoList[index]["tags"][1]),
+                      //     ),
+                      //   ],
+                      // )
                     ],
                   ),
                 ),
