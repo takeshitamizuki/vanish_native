@@ -60,7 +60,7 @@ class _FormGroupState extends State<FormGroup> {
   }
 
   void _addChip(String text) {
-    var chipKey = Key('chip_key_$_keyNumber');
+    var chipKey = Key(text);
     _keyNumber++;
 
     _chipList.add(
@@ -79,6 +79,7 @@ class _FormGroupState extends State<FormGroup> {
   void _post() async {
     final url = "http://localhost:8080/api/v1/todo";
     Map res;
+    print(_chipList[0].label);
     Map requestBody =
     {
       "todoId": null,
@@ -93,7 +94,7 @@ class _FormGroupState extends State<FormGroup> {
       "latitude": null,
       "longitude": null,
       "note": _note,
-      "tags": ["仕事"],
+      "tags": _chipList,
       "todaySequences": "1",
       "status": "true",
     };
@@ -179,21 +180,21 @@ class _FormGroupState extends State<FormGroup> {
                   ),
                   onSubmitted: _onSubmitted,
                 ),
-            //     Column(
-            //       mainAxisAlignment: MainAxisAlignment.start,
-            //       crossAxisAlignment: CrossAxisAlignment.start,
-            //       children: <Widget>[
-            //         Expanded(
-            //           child: Wrap(
-            //             alignment: WrapAlignment.start,
-            //             spacing: 8.0,
-            //             runSpacing: 0.0,
-            //             direction: Axis.vertical,
-            //             children: _chipList,
-            //           ),
-            //         ),
-            //       ],
-            //     ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Expanded(
+                      child: Wrap(
+                        alignment: WrapAlignment.start,
+                        spacing: 8.0,
+                        runSpacing: 0.0,
+                        direction: Axis.vertical,
+                        children: _chipList,
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
