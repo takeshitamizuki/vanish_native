@@ -79,7 +79,11 @@ class _FormGroupState extends State<FormGroup> {
   void _post() async {
     final url = "http://localhost:8080/api/v1/todo";
     Map res;
-    print(_chipList[0].label);
+    print(_chipList[0].label.toStringShallow().split(" ").last);
+    List<String> list;
+    for (var key in _chipList) {
+      list.add(key.label.toStringShallow().split(" ").last.toString());
+    }
     Map requestBody =
     {
       "todoId": null,
@@ -94,7 +98,7 @@ class _FormGroupState extends State<FormGroup> {
       "latitude": null,
       "longitude": null,
       "note": _note,
-      "tags": _chipList,
+      "tags": list,
       "todaySequences": "1",
       "status": "true",
     };
