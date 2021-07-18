@@ -3,8 +3,6 @@ import 'package:flutter/rendering.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:intl/intl.dart';
-
 class TodoAdd extends StatefulWidget {
   @override
   _TodoAddState createState() => _TodoAddState();
@@ -79,9 +77,8 @@ class _FormGroupState extends State<FormGroup> {
   void _post() async {
     final url = "http://localhost:8080/api/v1/todo";
     Map res;
-    List<String> list = [];
     for (var key in _chipList) {
-      list.add(chipToString(key));
+      _tags.add(chipToString(key));
     }
     Map requestBody =
     {
@@ -97,7 +94,7 @@ class _FormGroupState extends State<FormGroup> {
       "latitude": null,
       "longitude": null,
       "note": _note,
-      "tags": list,
+      "tags": _tags,
       "todaySequences": "1",
       "status": "true",
     };
