@@ -79,10 +79,9 @@ class _FormGroupState extends State<FormGroup> {
   void _post() async {
     final url = "http://localhost:8080/api/v1/todo";
     Map res;
-    print(_chipList[0].label.toStringShallow().split(" ").last);
-    List<String> list;
+    List<String> list = [];
     for (var key in _chipList) {
-      list.add(key.label.toStringShallow().split(" ").last.toString());
+      list.add(chipToString(key));
     }
     Map requestBody =
     {
@@ -232,6 +231,11 @@ class _FormGroupState extends State<FormGroup> {
       ),
     );
   }
+}
+
+String chipToString(Chip chip) {
+  Text text = chip.label;
+  return text.data;
 }
 
 Widget textFormField(String label, String errorMsg) {
