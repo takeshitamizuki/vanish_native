@@ -107,17 +107,16 @@ class _FormGroupState extends State<FormGroup> {
     res = json.decode(utf8.decode(response.bodyBytes));
   }
 
-  selectDate(BuildContext context) {
-    final selectedDate = showDatePicker(
+  selectDate(BuildContext context) async {
+    final selectedDate = await showDatePicker(
       context: context,
       initialDate: date,
       firstDate: DateTime(DateTime.now().year),
       lastDate: DateTime(DateTime.now().year + 1),
       locale: const Locale('ja'),
     );
-    if (selectDate == null) return
     this.setState(() {
-      this.date = selectedDate as DateTime;
+      this.date = selectedDate;
     });
   }
 
@@ -155,8 +154,8 @@ class _FormGroupState extends State<FormGroup> {
                 RaisedButton(
                   child: IconButton(
                     icon: Icon(Icons.calendar_today),
-                    onPressed: () async {
-                      await this.selectDate(context);
+                    onPressed: () {
+                      this.selectDate(context);
                     },
                   ),
                 ),
