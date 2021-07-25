@@ -31,6 +31,7 @@ class _FormGroupState extends State<FormGroup> {
   var _chipList = List<Chip>();
   var _keyNumber = 0;
   final _formKey = GlobalKey<FormState>();
+  DateTime date = new DateTime.now();
   String _title = '';
   String _startDay = '';
   String _endDay = '';
@@ -105,6 +106,21 @@ class _FormGroupState extends State<FormGroup> {
     http.Response response = await http.post(url, body: body, headers: headers);
     res = json.decode(utf8.decode(response.bodyBytes));
   }
+
+  selectDate(BuildContext context) {
+    final selectedDate = showDatePicker(
+      context: context,
+      initialDate: date,
+      firstDate: DateTime(DateTime.now().year),
+      lastDate: DateTime(DateTime.now().year + 1),
+      locale: const Locale('ja'),
+    );
+    if (selectDate == null) return
+    this.setState(() {
+      this.date = selectedDate as DateTime;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -134,21 +150,18 @@ class _FormGroupState extends State<FormGroup> {
           ),
           Container(
             margin: EdgeInsets.all(10),
-            child: IconButton(
-              icon: Icon(Icons.calendar_today),
-              onPressed: () async {
-                final selectedDate = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(DateTime
-                      .now()
-                      .year),
-                  lastDate: DateTime(DateTime
-                      .now()
-                      .year + 1),
-                  locale: const Locale('ja'),
-                );
-              },
+            child: Row(
+              children: [
+                RaisedButton(
+                  child: IconButton(
+                    icon: Icon(Icons.calendar_today),
+                    onPressed: () async {
+                      await this.selectDate(context);
+                    },
+                  ),
+                ),
+                Text(this.date.toString())
+              ],
             ),
           ),
           Container(
