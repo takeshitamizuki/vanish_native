@@ -3,6 +3,8 @@ import 'package:flutter/rendering.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
+
 class TodoAdd extends StatefulWidget {
   @override
   _TodoAddState createState() => _TodoAddState();
@@ -86,10 +88,8 @@ class _FormGroupState extends State<FormGroup> {
       "todoId": null,
       "userId": "12345678",
       "title": _title,
-      "startDate": "2021-06-16 12:00:00",
-      "endDate": "2021-06-20 12:00:00",
-      "registeredAt": "2021-06-16 12:00:00",
-      "updateAt": "2021-06-16 12:00:00",
+      "startDate": _startDay,
+      "endDate": _endDay,
       "completedAt": null,
       "deletedAt": null,
       "latitude": null,
@@ -97,7 +97,7 @@ class _FormGroupState extends State<FormGroup> {
       "note": _note,
       "tags": _tags,
       "todaySequences": "1",
-      "status": "true",
+      "status": true,
     };
     Map<String, String> headers = {
       'Content-Type': 'application/json'
@@ -107,7 +107,7 @@ class _FormGroupState extends State<FormGroup> {
     res = json.decode(utf8.decode(response.bodyBytes));
   }
 
-  selectDate(BuildContext context) async {
+  selectDate(BuildContext context, String startOrEnd) async {
     final selectedDate = await showDatePicker(
       context: context,
       initialDate: date,
@@ -116,7 +116,13 @@ class _FormGroupState extends State<FormGroup> {
       locale: const Locale('ja'),
     );
     this.setState(() {
-      this.date = selectedDate;
+      DateFormat outputFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
+      String date = outputFormat.format(selectedDate);
+      if (startOrEnd == 'start') {
+        this._startDay = date;
+      } else if(startOrEnd == 'end') {
+        this._endDay = date;
+      }
     });
   }
 
@@ -155,11 +161,27 @@ class _FormGroupState extends State<FormGroup> {
                   child: IconButton(
                     icon: Icon(Icons.calendar_today),
                     onPressed: () {
-                      this.selectDate(context);
+                      this.selectDate(context, 'start');
                     },
                   ),
                 ),
-                Text(this.date.toString())
+                Text(this._startDay)
+              ],
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.all(10),
+            child: Row(
+              children: [
+                RaisedButton(
+                  child: IconButton(
+                    icon: Icon(Icons.calendar_today),
+                    onPressed: () {
+                      this.selectDate(context, 'end');
+                    },
+                  ),
+                ),
+                Text(this._endDay)
               ],
             ),
           ),
