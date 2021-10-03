@@ -73,29 +73,40 @@ class _TodoListState extends State<TodoList> {
                   margin: EdgeInsets.all(5),
                   width: 310,
                   padding: EdgeInsets.all(20),
-                  child: Column(
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Container(
-                            child: Text(todoList[index]["title"]),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(left: 50),
-                            child: Text(todoList[index]["endDate"].split(" ")[0]),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: <Widget>[
-                          for (int x = 0; x < todoList[index]["tags"].length; x++)
-                            if (todoList[index]["tags"][x] != null)
-                              Container(
-                                child: Text(todoList[index]["tags"][x]),
-                              ),
-                        ],
-                      )
-                    ],
+                  child: InkWell(
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Text('Aの動作の確認'),
+                            );
+                          });
+                    },
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Container(
+                              child: Text(todoList[index]["title"]),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(left: 50),
+                              child: Text(todoList[index]["endDate"].split(" ")[0]),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: <Widget>[
+                            for (int x = 0; x < todoList[index]["tags"].length; x++)
+                              if (todoList[index]["tags"][x] != null)
+                                Container(
+                                  child: Text(todoList[index]["tags"][x]),
+                                ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               )
