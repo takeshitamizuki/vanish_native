@@ -78,9 +78,24 @@ class _TodoListState extends State<TodoList> {
                       showDialog(
                           context: context,
                           builder: (context) {
-                            return AlertDialog(
-                              title: Text('Aの動作の確認'),
-                            );
+                            return Container(
+                              child: Row(
+                                children: <Widget>[
+                                  Container(
+                                    child: Text('title'),
+                                  ),
+                                  Container(
+                                    child: Text('startDate'),
+                                  ),
+                                  Container(
+                                    child: Text('endDate'),
+                                  ),
+                                  Container(
+                                    child: Text('tag'),
+                                  ),
+                                ],
+                              )
+                            )
                           });
                     },
                     child: Column(
