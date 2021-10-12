@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vanish_native/ui/todo_add_view.dart';
+import 'package:vanish_native/ui/todo_detail_view.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
@@ -75,28 +76,12 @@ class _TodoListState extends State<TodoList> {
                   padding: EdgeInsets.all(20),
                   child: InkWell(
                     onTap: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return Container(
-                              child: Row(
-                                children: <Widget>[
-                                  Container(
-                                    child: Text('title'),
-                                  ),
-                                  Container(
-                                    child: Text('startDate'),
-                                  ),
-                                  Container(
-                                    child: Text('endDate'),
-                                  ),
-                                  Container(
-                                    child: Text('tag'),
-                                  ),
-                                ],
-                              )
-                            )
-                          });
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) {
+                          // 遷移先の画面としてリスト追加画面を指定
+                          return TodoDetail();
+                        }),
+                      );
                     },
                     child: Column(
                       children: <Widget>[
