@@ -5,8 +5,8 @@ import 'dart:async';
 import 'dart:convert';
 
 class TodoDetail extends StatefulWidget {
-  TodoDetail(this.id);
-  int id;
+  TodoDetail(this.todoId);
+  final String todoId;
 
   @override
   _TodoDetailState createState() => _TodoDetailState();
@@ -17,8 +17,8 @@ class _TodoDetailState extends State<TodoDetail> {
   Map data;
   Map result;
 
-  Future getTodoDetail(int id) async {
-    http.Response response = await http.get("http://localhost:8080/api/v1/todo/$id");
+  Future getTodoDetail(String todoId) async {
+    http.Response response = await http.get("http://localhost:8080/api/v1/todo/$todoId");
     data = json.decode(utf8.decode(response.bodyBytes));
     setState(() {
       result = data["data"];
@@ -28,8 +28,8 @@ class _TodoDetailState extends State<TodoDetail> {
   @override
   void initState() {
     super.initState();
-    int id = widget.id;
-    getTodoDetail(id);
+    String todoId = widget.todoId;
+    getTodoDetail(todoId);
   }
   @override
   Widget build(BuildContext context) {
@@ -47,11 +47,26 @@ class _TodoDetailState extends State<TodoDetail> {
           ),
         ],
       ),
-      body: Center(
-        child: Row(
+      body: Container(
+        child: Column(
           children: <Widget>[
             Container(
-              child: Text(data["endDate"]),
+              child: Text(result["title"]),
+            ),
+            Container(
+              child: Text(result["startDate"]),
+            ),
+            Container(
+              child: Text(result["endDate"]),
+            ),
+            Container(
+              child: Text(result["note"]),
+            ),
+            Container(
+              child: Text(result["tags"].toString()),
+            ),
+            Container(
+              child: Text(result["status"].toString()),
             ),
           ],
         ),
