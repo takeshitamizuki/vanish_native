@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:vanish_native/ui/todo_edit_view.dart';
+
 class TodoDetail extends StatefulWidget {
   TodoDetail(this.todoId);
   final String todoId;
@@ -42,7 +44,13 @@ class _TodoDetailState extends State<TodoDetail> {
         title: Text('TODO詳細'),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) {
+                  return TodoEdit(result["todoId"]);
+                }),
+              );
+            },
             icon: Icon(Icons.mode_edit),
           ),
         ],

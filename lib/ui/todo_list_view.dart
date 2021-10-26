@@ -78,7 +78,6 @@ class _TodoListState extends State<TodoList> {
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) {
-                          // 遷移先の画面としてリスト追加画面を指定
                           return TodoDetail(todoList[index]["todoId"]);
                         }),
                       );

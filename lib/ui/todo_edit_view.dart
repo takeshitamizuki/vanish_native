@@ -1,31 +1,50 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:http/http.dart' as http;
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:intl/intl.dart';
 
-class TodoAdd extends StatefulWidget {
-  @override
-  _TodoAddState createState() => _TodoAddState();
-}
-class _TodoAddState extends State<TodoAdd> {
+class TodoEdit extends StatefulWidget {
+  TodoEdit(this.todoId);
 
+  final String todoId;
+
+  @override
+  _TodoEditState createState() => _TodoEditState();
+}
+
+class _TodoEditState extends State<TodoEdit> {
+  Map data;
+  Map result;
+
+  Future getTodoDetail(String todoId) async {
+    http.Response response = await http.get(
+        "http://localhost:8080/api/v1/todo/$todoId");
+    data = json.decode(utf8.decode(response.bodyBytes));
+    setState(() {
+      result = data["data"];
+      print(result);
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('TODO登録'),
-      ),
-      body: FormGroup()
+        appBar: AppBar(
+          title: Text('TODO更新'),
+        ),
+        body: FormGroup()
     );
   }
 }
+
 
 class FormGroup extends StatefulWidget {
   @override
   _FormGroupState createState() => _FormGroupState();
 }
+
 class _FormGroupState extends State<FormGroup> {
   var _textFieldFocusNode;
   var _inputController = TextEditingController();
@@ -82,8 +101,7 @@ class _FormGroupState extends State<FormGroup> {
     for (var key in _chipList) {
       _tags.add(chipToString(key));
     }
-    Map requestBody =
-    {
+    Map requestBody = {
       "todoId": null,
       "userId": "12345678",
       "title": _title,
@@ -98,9 +116,7 @@ class _FormGroupState extends State<FormGroup> {
       "todaySequences": "1",
       "status": true,
     };
-    Map<String, String> headers = {
-      'Content-Type': 'application/json'
-    };
+    Map<String, String> headers = {'Content-Type': 'application/json'};
     String body = json.encode(requestBody);
     http.Response response = await http.post(url, body: body, headers: headers);
     res = json.decode(utf8.decode(response.bodyBytes));
@@ -119,7 +135,7 @@ class _FormGroupState extends State<FormGroup> {
       String date = outputFormat.format(selectedDate);
       if (startOrEnd == 'start') {
         this._startDay = date;
-      } else if(startOrEnd == 'end') {
+      } else if (startOrEnd == 'end') {
         this._endDay = date;
       }
     });
@@ -252,7 +268,7 @@ class _FormGroupState extends State<FormGroup> {
                       this._post();
                     }
                   },
-                  child: Text('登録'),
+                  child: Text('更新'),
                 ),
               ),
             ],
