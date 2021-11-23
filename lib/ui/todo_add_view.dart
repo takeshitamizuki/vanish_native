@@ -29,7 +29,7 @@ class FormGroup extends StatefulWidget {
 class _FormGroupState extends State<FormGroup> {
   var _textFieldFocusNode;
   var _inputController = TextEditingController();
-  var _chipList = List<Chip>();
+  var _chipList = <Chip>[];
   var _keyNumber = 0;
   final _formKey = GlobalKey<FormState>();
   DateTime date = new DateTime.now();
@@ -116,7 +116,7 @@ class _FormGroupState extends State<FormGroup> {
     );
     this.setState(() {
       DateFormat outputFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
-      String date = outputFormat.format(selectedDate);
+      String date = outputFormat.format(selectedDate!);
       if (startOrEnd == 'start') {
         this._startDay = date;
       } else if(startOrEnd == 'end') {
@@ -142,13 +142,13 @@ class _FormGroupState extends State<FormGroup> {
               ),
               autovalidate: false,
               validator: (value) {
-                if (value.isEmpty) {
+                if (value!.isEmpty) {
                   return 'やることを入力してください';
                 }
                 return null;
               },
               onSaved: (value) => setState(() {
-                _title = value;
+                _title = value!;
               }),
             ),
           ),
@@ -156,13 +156,12 @@ class _FormGroupState extends State<FormGroup> {
             margin: EdgeInsets.all(10),
             child: Row(
               children: [
-                RaisedButton(
-                  child: IconButton(
-                    icon: Icon(Icons.calendar_today),
-                    onPressed: () {
-                      this.selectDate(context, 'start');
-                    },
-                  ),
+                ElevatedButton.icon(
+                  icon: Icon(Icons.calendar_today),
+                  onPressed: () {
+                    this.selectDate(context, 'start');
+                  },
+                  label: Text(""),
                 ),
                 Text(this._startDay)
               ],
@@ -172,13 +171,12 @@ class _FormGroupState extends State<FormGroup> {
             margin: EdgeInsets.all(10),
             child: Row(
               children: [
-                RaisedButton(
-                  child: IconButton(
-                    icon: Icon(Icons.calendar_today),
-                    onPressed: () {
-                      this.selectDate(context, 'end');
-                    },
-                  ),
+                ElevatedButton.icon(
+                  icon: Icon(Icons.calendar_today),
+                  onPressed: () {
+                    this.selectDate(context, 'end');
+                  },
+                  label: Text(""),
                 ),
                 Text(this._endDay)
               ],
@@ -194,7 +192,7 @@ class _FormGroupState extends State<FormGroup> {
               ),
               autovalidate: false,
               onSaved: (value) => setState(() {
-                _note = value;
+                _note = value!;
               }),
             ),
           ),
@@ -236,7 +234,7 @@ class _FormGroupState extends State<FormGroup> {
             children: <Widget>[
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: RaisedButton(
+                child: ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -245,10 +243,10 @@ class _FormGroupState extends State<FormGroup> {
               ),
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: RaisedButton(
+                child: ElevatedButton(
                   onPressed: () {
-                    if (_formKey.currentState.validate()) {
-                      this._formKey.currentState.save();
+                    if (_formKey.currentState!.validate()) {
+                      this._formKey.currentState!.save();
                       this._post();
                     }
                   },
@@ -277,7 +275,7 @@ Widget textFormField(String label, String errorMsg) {
     ),
     autovalidate: false,
     validator: (value) {
-      if (value.isEmpty) {
+      if (value!.isEmpty) {
         return errorMsg;
       }
       return null;

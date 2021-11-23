@@ -13,7 +13,7 @@ class TodoList extends StatefulWidget {
 
 class _TodoListState extends State<TodoList> {
   // Todoリストのデータ
-  Map data;
+  late Map data;
   List todoList = [];
   int totalCount = 0;
 

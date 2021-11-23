@@ -19,8 +19,8 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-  Map data;
-  List userData;
+  late Map data;
+  late List userData;
 
   Future getData() async {
     //Future xxx async{} という記法
