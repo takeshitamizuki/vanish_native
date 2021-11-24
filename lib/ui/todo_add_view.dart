@@ -80,7 +80,7 @@ class _FormGroupState extends State<FormGroup> {
     final url = "http://localhost:8080/api/v1/todo";
     Map res;
     for (var key in _chipList) {
-      _tags.add(chipToString(key));
+      _tags.add(key.label);
     }
     Map requestBody =
     {
@@ -259,11 +259,6 @@ class _FormGroupState extends State<FormGroup> {
       ),
     );
   }
-}
-
-String chipToString(Chip chip) {
-  Text text = chip.label;
-  return text.data;
 }
 
 Widget textFormField(String label, String errorMsg) {

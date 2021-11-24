@@ -46,9 +46,10 @@ class FormGroup extends StatefulWidget {
 }
 
 class _FormGroupState extends State<FormGroup> {
+  late List<Chip> _chipList;
   var _textFieldFocusNode;
   var _inputController = TextEditingController();
-  var _chipList = List<Chip>();
+
   var _keyNumber = 0;
   final _formKey = GlobalKey<FormState>();
   DateTime date = new DateTime.now();
@@ -99,7 +100,7 @@ class _FormGroupState extends State<FormGroup> {
     final url = "http://localhost:8080/api/v1/todo";
     Map res;
     for (var key in _chipList) {
-      _tags.add(chipToString(key));
+      _tags.add(key.label);
     }
     Map requestBody = {
       "todoId": null,
@@ -275,11 +276,6 @@ class _FormGroupState extends State<FormGroup> {
       ),
     );
   }
-}
-
-String? chipToString(Chip chip) {
-  Widget text = chip.label;
-  return text.data;
 }
 
 Widget textFormField(String label, String errorMsg) {
